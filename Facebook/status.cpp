@@ -34,6 +34,7 @@ char * Status::GetTheStatus()const
 void Status::show()
 {
 	this->postDate.ShowDate();
+	cout << " ";
 	this->postTime.showTime();
 	this->show1();
 	/*if (this->kind == text)

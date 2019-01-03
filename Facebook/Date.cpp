@@ -23,7 +23,7 @@ void Date::setYear(int year)
 }
 void Date::ShowDate()
 {
-	cout << " " << day << "/" << month << "/" << year;
+	cout << day << "/" << month << "/" << year;
 }
 
 
