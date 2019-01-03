@@ -36,7 +36,5 @@ fanPage::fanPage(char *name)
 
 fanPage::~fanPage()
 {
-	delete[]name;
-	delete[]friends;
-	delete[]MemberStatus;
+	
 }

@@ -12,7 +12,6 @@ class Status
 	friend class member;
 
 protected:
-	char *post;
 	Date postDate;
 	Time postTime;
 	KIND kind;
@@ -23,13 +22,8 @@ public:
 	int compare(Status *statusToCheck);
 	void show();
 	virtual void show1() {};
-	char *GetTheStatus() const;
 	Date GetStatusDate() const;
-	bool operator==(Status *post);
 
-	bool operator!=(Status *post) {
-		return !(*this == post); //return the opposite of the == function
-	}
 	~Status();
 };
 #endif

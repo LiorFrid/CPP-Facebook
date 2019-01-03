@@ -4,6 +4,7 @@
 #define NOTHINGTOCHECK -1
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NONSTDC_NO_WARNINGS
+#define MAXNAME 20
 #include "Date.h"
 
 #include "status.h"
@@ -38,7 +39,7 @@ public:
 	entity() = default;
 
 	void operator>(entity *other);
-	entity(char name[20], member ** friends);
+	entity(char name[MAXNAME], member ** friends);
 	entity(const entity& other);
 
 

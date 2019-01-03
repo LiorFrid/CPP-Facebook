@@ -171,7 +171,7 @@ void main()
 	Facebook myface;
 	int choice;
 	choice = menu(&myface);
-	while (choice < 10 && choice>0)
+	while (choice <= 10 && choice>0)
 	{
 		choice = menu(&myface);
 

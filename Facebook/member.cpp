@@ -205,10 +205,8 @@ void member::showPages()
 
 member::~member()
 {
-	delete[] name;
-	delete[] friends;
+	
 	delete[] pageArr;
-	delete[] MemberStatus;
 }
 
 

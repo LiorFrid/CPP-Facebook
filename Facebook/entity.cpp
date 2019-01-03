@@ -39,7 +39,7 @@ void  entity::AllocateMemoryStatus()
 
 
 
-entity::entity(char name[20], member ** friends)
+entity::entity(char name[MAXNAME], member ** friends)
 {
 	this->name = name;
 
@@ -73,7 +73,7 @@ void entity::WritePost()
 	int x;
 	cin >> x;
 	if(x==1)
-		newstatus = new TextStatus[1];
+		 newstatus = new TextStatus[1];
 	else if (x==2)
 	     newstatus = new PictureStatus[1];
 	else if(x==3)
@@ -83,23 +83,36 @@ void entity::WritePost()
 	else
 		 newstatus = new TextVideo[1];
 
-
-	this->MemberStatus[this->logicSizeOfStatus] = newstatus;
-	/*
-	for (i = 0; i < logicSizeOfStatus; i++)
+	TextStatus *check1, *check2;
+	int flag = 0;
+	if (x == 1)
 	{
-		duppost = *(this->MemberStatus[i]) != newstatus;
-
-		if (duppost == 0) //means it is the same post
+		check1 = dynamic_cast<TextStatus*>(newstatus);
+		for (i = 0; i < logicSizeOfStatus; i++)
 		{
-			cout << "unfortunately " << this->getName() << " already has the same post in his wall, nothing was added";
-			delete[]this->MemberStatus[this->logicSizeOfStatus];
-			return;
+			check2=  dynamic_cast<TextStatus*>(this->MemberStatus[i]);
+			
+			if (check1&&check2)
+			{
+				duppost = *check2 != check1;
+
+				if (duppost == 0) //means it is the same post
+				{
+					flag = 1;
+					cout << "unfortunately " << this->getName() << " already has the same post in his wall, nothing was added";
+					
+				}
+			}
 		}
-	}*/
-	logicSizeOfStatus++;
-	if (logicSizeOfStatus == physicSizeOfStatus)
-		AllocateMemoryStatus();
+	}
+	if (flag == 0)
+	{
+		this->MemberStatus[this->logicSizeOfStatus] = newstatus;
+
+		logicSizeOfStatus++;
+		if (logicSizeOfStatus == physicSizeOfStatus)
+			AllocateMemoryStatus();
+	}
 }
 
 
@@ -122,35 +135,6 @@ void entity::showFriends()
 	}
 }
 
-
-void entity::showPosts()
-{
-	system("cls");
-	char a;
-	Date date;
-	if (logicSizeOfStatus == 0)
-	{
-
-		cout << this->getName() << " doesn't have any posts" << endl;
-	}
-	else
-	{
-		cout << this->getName() << "'s posts:" << endl;
-		for (int i = 0; i < logicSizeOfStatus; i++)
-		{
-			cout << i << ". ";
-			cout << this->MemberStatus[i]->GetTheStatus();
-			date = this->MemberStatus[i]->GetStatusDate();
-			cout << "   posted on";
-			date.ShowDate();
-			cout << endl;
-		}
-	}
-
-	cout << endl << endl << endl << "press any key to go to the main screen";
-	cin >> a;
-	system("cls");
-}
 
 
 void  entity::operator>(entity *other)
