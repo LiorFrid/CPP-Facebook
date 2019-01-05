@@ -6,7 +6,7 @@
 #define _CRT_NONSTDC_NO_WARNINGS
 #define MAXNAME 20
 #include "Date.h"
-
+#include <vector>
 #include "status.h"
 #include "TextStatus.h"
 #include "PictureStatus.h"
@@ -23,15 +23,12 @@ class entity
 protected:
 	char *name;
 	int logicSizeOfFriends = 0;
-	int physicSizeOfFriends = 4;
 	int logicSizeOfStatus = 0;
-	int physicSizeOfStatus = 1;
-	member ** friends = new member *[1];
-	Status ** MemberStatus = new Status *[1];
+
+	vector < member*>  friends;
+	vector < Status*> MemberStatus;
 
 
-	void  AllocateMemoryFriends();
-	void  AllocateMemoryStatus();
 
 public:
 
@@ -60,7 +57,7 @@ public:
 
 	void showFriends();
 
-	void showPosts();
+
 	virtual ~entity();
 
 
