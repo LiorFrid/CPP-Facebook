@@ -5,19 +5,6 @@
 
 
 
-void  member::AllocateMemoryFanPage()
-{
-
-	physicSizeOfPage *= 2;
-	Status ** tempArry = new Status*[physicSizeOfPage];
-	for (int i = 0; i < logicSizeOfPage; i++)
-	{
-		tempArry[i] = MemberStatus[i];
-	}
-	delete[] MemberStatus;
-	this->MemberStatus = tempArry;
-
-}
 
 void member::showLastTenFriendsStatuses()
 {
@@ -137,15 +124,11 @@ void member::operator+=(member * newfriend)
 		}
 	}
 	logicalsize = newfriend->logicSizeOfFriends;
-	newfriend->friends[logicalsize] = this;
-	this->friends[this->logicSizeOfFriends] = newfriend;
+	newfriend->friends.push_back(this);
+	friends.push_back(newfriend);
 	logicSizeOfFriends++;
 	newfriend->logicSizeOfFriends = newfriend->logicSizeOfFriends + 1;
-	if (logicSizeOfFriends == physicSizeOfFriends)
-		AllocateMemoryFriends();
-	if (newfriend->logicSizeOfFriends == newfriend->physicSizeOfFriends)
-		newfriend->AllocateMemoryFriends();
-
+	
 	cout << this->getName() << " and " << newfriend->getName() << " are now friends " << endl;
 	return;
 }
@@ -166,17 +149,15 @@ void member::operator+=(fanPage *page)
 		}
 	}
 
-	this->pageArr[logicSizeOfPage] = page;
+	this->pageArr.push_back( page);
 	logicalsizeofpage = this->pageArr[logicSizeOfPage]->logicSizeOfFriends;
-	this->pageArr[logicSizeOfPage]->friends[logicalsizeofpage] = this;
+	page->friends.push_back(this);
 	logicSizeOfPage++;
 
-	if (this->logicSizeOfPage == this->physicSizeOfPage) //increase memory of page for followers
-		this->AllocateMemoryFanPage();
+	
 
-	this->pageArr[logicSizeOfPage - 1]->logicSizeOfFriends++;
-	if (this->pageArr[logicSizeOfPage - 1]->logicSizeOfFriends == this->pageArr[logicSizeOfPage - 1]->physicSizeOfFriends) //increase memory of page for followers
-		this->pageArr[logicSizeOfPage - 1]->AllocateMemoryFriends();
+	page->logicSizeOfFriends++;
+	
 
 	cout << this->getName() << " now like the page " << page->getName();
 
@@ -206,7 +187,7 @@ void member::showPages()
 member::~member()
 {
 	
-	delete[] pageArr;
+	pageArr.clear();
 }
 
 
