@@ -20,9 +20,8 @@ private:
 	int whereToCheck;
 	int logicSizeOfPage = 0;
 	int physicSizeOfPage = 4;
-	fanPage ** pageArr = new fanPage *[1];
+	vector<fanPage *> pageArr;
 
-	void  AllocateMemoryFanPage();
 public:
 
 
