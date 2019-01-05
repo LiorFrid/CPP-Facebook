@@ -2,17 +2,18 @@
 
 void Facebook::ShowMembers()
 {
+	vector<entity*>::iterator itr = ArryOfEntities.begin();
 	member *tempforcast;
 	int count = 1;
 	for (int i = 0; i < LogicalNumberOfEntities; i++)
 	{
-		tempforcast = dynamic_cast<member*>(ArryOfEntities[i]);
+		tempforcast = dynamic_cast<member*>(*itr);
 		if (tempforcast)
 		{
-
 			cout << count << ". " << tempforcast->getName() << " (" << i << ")" << endl; //will show only member type
 			count++;
 		}
+		itr++;
 	}
 
 }
@@ -38,19 +39,6 @@ void Facebook::ShowFanPage()
 
 
 
-void  Facebook::AllocateMemoryEntities()
-{
-
-	PhysicalNumberOfEntities *= 2;
-	entity** tempemoryArr = new entity*[PhysicalNumberOfEntities];
-	for (int i = 0; i < LogicalNumberOfEntities; i++)
-	{
-		tempemoryArr[i] = this->ArryOfEntities[i];
-	}
-	delete[] ArryOfEntities;
-	this->ArryOfEntities = tempemoryArr;
-}
-
 
 
 
@@ -63,7 +51,7 @@ void Facebook::LikePage()
 {
 	member *user;
 	fanPage *page;
-	int userindex, pageindex, flag;
+	int userindex, pageindex, flag=9;
 
 	cout << endl << "From the below users, choose the number of the friend you want to add a page to" << endl;
 	this->ShowMembers();
@@ -246,11 +234,10 @@ void Facebook::AddMember()
 	if (name != NULL && NewMember != NULL)
 		cout << "user was added successfully :) enjoy your stay" << endl;
 
-	ArryOfEntities[LogicalNumberOfEntities] = NewMember;
+	ArryOfEntities.push_back(NewMember);
 	(this->LogicalNumberOfEntities)++;
 	(this->LogicalNumberOfMembers)++;
-	if (LogicalNumberOfEntities == PhysicalNumberOfEntities)
-		AllocateMemoryEntities();
+	
 
 }
 
@@ -272,11 +259,10 @@ void Facebook::AddFanFage()
 	if (name != NULL && NewFanPage != NULL)
 		cout << "fanpage was added successfully :)" << endl;
 
-	ArryOfEntities[LogicalNumberOfEntities] = NewFanPage;
+	ArryOfEntities.push_back(NewFanPage);
 	(this->LogicalNumberOfEntities)++;
 	(this->LogicalNumberOfFanPage)++;
-	if (LogicalNumberOfEntities == PhysicalNumberOfEntities)
-		AllocateMemoryEntities();
+	
 
 
 }
@@ -291,7 +277,7 @@ Facebook::~Facebook()
 		delete[]ArryOfEntities[i];
 	}
 
-	delete[]ArryOfEntities;
+	ArryOfEntities.clear();
 
 
 

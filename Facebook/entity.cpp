@@ -5,37 +5,6 @@
 
 
 
-void  entity::AllocateMemoryFriends()
-{
-
-	physicSizeOfFriends *= 2;
-	member** tempArry = new member*[physicSizeOfFriends];
-	for (int i = 0; i < logicSizeOfFriends; i++)
-	{
-		tempArry[i] = friends[i];
-	}
-	delete[] friends;
-	this->friends = tempArry;
-
-}
-
-
-
-
-void  entity::AllocateMemoryStatus()
-{
-
-	physicSizeOfStatus *= 2;
-	Status ** tempArry = new Status*[physicSizeOfStatus];
-	for (int i = 0; i < logicSizeOfStatus; i++)
-	{
-		tempArry[i] = MemberStatus[i];
-	}
-	delete[] MemberStatus;
-	this->MemberStatus = tempArry;
-
-}
-
 
 
 
@@ -107,11 +76,10 @@ void entity::WritePost()
 	}
 	if (flag == 0)
 	{
-		this->MemberStatus[this->logicSizeOfStatus] = newstatus;
+		this->MemberStatus.push_back (newstatus);
 
 		logicSizeOfStatus++;
-		if (logicSizeOfStatus == physicSizeOfStatus)
-			AllocateMemoryStatus();
+
 	}
 }
 
@@ -150,6 +118,8 @@ void  entity::operator>(entity *other)
 entity::~entity()
 {
 	delete[] name;
-	delete[] friends;
-	delete[] MemberStatus;
+	//need to clear all friends
+	friends.clear();
+	//need to clear all status
+	MemberStatus.clear();
 }

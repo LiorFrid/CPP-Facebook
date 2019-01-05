@@ -4,6 +4,7 @@
 #define __FACEBOOK_H
 #include "member.h"
 #include "fanPage.h"
+#include <vector>
 // Respect
 class member;
 class fanPage;
@@ -29,13 +30,11 @@ public:
 
 private:
 
-	int PhysicalNumberOfEntities = 1;
 	int LogicalNumberOfMembers = 0;
 	int LogicalNumberOfFanPage = 0;
-	void  AllocateMemoryEntities();
 	int LogicalNumberOfEntities = 0;
 
-	entity **ArryOfEntities = new entity*[10];
+	vector<entity*> ArryOfEntities;
 
 
 };
