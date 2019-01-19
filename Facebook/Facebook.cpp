@@ -4,16 +4,17 @@ void Facebook::ShowMembers()
 {
 	vector<entity*>::iterator itr = ArryOfEntities.begin();
 	member *tempforcast;
-	int count = 1;
-	for (int i = 0; i < LogicalNumberOfEntities; i++)
+	int count = 1,i=0;
+	vector<entity*>::iterator EntIter;
+	for (EntIter = ArryOfEntities.begin(); EntIter != ArryOfEntities.end(); EntIter++)
 	{
-		tempforcast = dynamic_cast<member*>(*itr);
+		tempforcast = dynamic_cast<member*>(*EntIter);
 		if (tempforcast)
 		{
 			cout << count << ". " << tempforcast->getName() << " (" << i << ")" << endl; //will show only member type
 			count++;
 		}
-		itr++;
+		i++;
 	}
 
 }
@@ -23,15 +24,16 @@ void Facebook::ShowFanPage()
 {
 	cout << "below you can see all the pages Facebook currently have" << endl;
 	fanPage *tempforcast;
-	int count = 1;
-	for (int i = 0; i < LogicalNumberOfEntities; i++)
+	int count = 1,i=0;
+	vector<entity*>::iterator EntIter;
+	for ( EntIter=ArryOfEntities.begin(); EntIter != ArryOfEntities.end(); EntIter++)
 	{
-		tempforcast = dynamic_cast<fanPage*>(ArryOfEntities[i]);
+		tempforcast = dynamic_cast<fanPage*>(*EntIter);
 		if (tempforcast)
 		{
 			cout << count << ". " << tempforcast->getName() << " (" << i << ")" << endl; //will show only fan type
 			count++;
-
+			i++;
 		}
 	}
 
@@ -79,7 +81,7 @@ void Facebook::setfriendship()
 	cin >> firstindex;
 	cout << "\nsecond member : ";
 	cin >> secondindex;
-	flag1 = firstindex == secondindex || firstindex < 0 || secondindex < 0 || secondindex > LogicalNumberOfEntities - 1 || firstindex > LogicalNumberOfEntities - 1;
+	flag1 = firstindex == secondindex || firstindex < 0 || secondindex < 0 || secondindex > this->ArryOfEntities.size() - 1 || firstindex > this->ArryOfEntities.size() - 1;
 	if (flag1)
 	{
 		first = dynamic_cast<member*>(ArryOfEntities[firstindex]);
@@ -98,7 +100,7 @@ void Facebook::setfriendship()
 		cin >> firstindex;
 		cout << "\nsecond member : ";
 		cin >> secondindex;
-		flag1 = firstindex == secondindex || firstindex < 0 || secondindex < 0 || secondindex > LogicalNumberOfEntities - 1 || firstindex > LogicalNumberOfEntities - 1;
+		flag1 = firstindex == secondindex || firstindex < 0 || secondindex < 0 || secondindex > this->ArryOfEntities.size() - 1 || firstindex > this->ArryOfEntities.size() - 1;
 		if (flag1)
 		{
 			first = dynamic_cast<member*>(ArryOfEntities[firstindex]);
@@ -137,7 +139,7 @@ member *Facebook::GetMember(int index)const
 int Facebook::GetNumOfEntities()const
 {
 
-	return LogicalNumberOfEntities;
+	return this->ArryOfEntities.size();
 
 }
 
@@ -167,17 +169,18 @@ fanPage *Facebook::GetFanPage(int index) const
 
 }
 
-int Facebook::CheckNoDupName(char * name, int flag)
+int Facebook::CheckNoDupName(string name, int flag)
 {
-	int i = 0, DupName;
+	int i = 0;
 	member * tempforcast;
-	for (i = 0; i < LogicalNumberOfEntities; i++)
+	
+	for (vector<entity*>::iterator EntIter = ArryOfEntities.begin(); EntIter != ArryOfEntities.end(); EntIter++)
+	
 	{
-		tempforcast = dynamic_cast<member*>(ArryOfEntities[i]);
-		if (tempforcast)
+		tempforcast = dynamic_cast<member*>(*EntIter);
+		if (*EntIter)
 		{
-			DupName = strcmp(ArryOfEntities[i]->getName(), name);
-			if (DupName == 0)
+			if((*EntIter)->getName()== name)
 			{
 				cout << "this username is already taken, choose another one\n";
 				return 1;
@@ -193,26 +196,19 @@ int Facebook::CheckNoDupName(char * name, int flag)
 void Facebook::AddMember()
 {
 	cout << "Hi, Welcome to the new Facebook, please enter your name" << endl;
-	char TempName[20];
+	string TempName;
 	int d, m, y, size, flagname = 1;
 
-	cin.ignore();
-	cin.getline(TempName, 30);
-	size = strlen(TempName);
-	char *name = new char[size + 1];
-	//cin.ignore();
+	
+	cin >> TempName;
 	flagname = CheckNoDupName(TempName, flagname);
 	while (flagname == 1)
 	{
-		//cin.ignore();
-		cin.getline(TempName, 30);
-		size = strlen(TempName);
-		char *name = new char[size + 1];
-		//cin.ignore();
+		cin >> TempName;
 
 		flagname = CheckNoDupName(TempName, flagname);
 	}
-	strcpy(name, TempName);
+	
 	cout << "Now, please enter your birthday, starting with day, month and year" << endl;
 	cout << "day : ";
 	cin >> d;
@@ -228,16 +224,16 @@ void Facebook::AddMember()
 	Date birth(d, m, y);
 
 	member(*NewMember) = new member();
-	(*NewMember).setName(name);
+	(*NewMember).setName(TempName);
 	(*NewMember).setBirthDay(d, y, m);
 
-	if (name != NULL && NewMember != NULL)
+	if (!TempName.empty() && NewMember != NULL)
 		cout << "user was added successfully :) enjoy your stay" << endl;
 
 	ArryOfEntities.push_back(NewMember);
-	(this->LogicalNumberOfEntities)++;
+//	(this->LogicalNumberOfEntities)++;//remove
+//	(this->LogicalNumberOfMembers)++;
 	(this->LogicalNumberOfMembers)++;
-	
 
 }
 
@@ -245,34 +241,46 @@ void Facebook::AddMember()
 
 void Facebook::AddFanFage()
 {
+	
 	fanPage *NewFanPage;
-
+	int flagname = 0;
 	cout << "please enter the page's name - 20 letters maximum" << endl;
-	char *name = new char[20];
+	string TempName ="dor";
+	cin >> TempName;
+	
+	flagname = CheckNoDupName(TempName, flagname);
+	while (flagname == 1)
+	{
+		cin >> TempName;
 
-	cin >> name;
+		flagname = CheckNoDupName(TempName, flagname);
+	}
+
 
 	NewFanPage = new fanPage();
-	(*NewFanPage).setName(name);
+	
+	(*NewFanPage).setName(TempName);
 
 
-	if (name != NULL && NewFanPage != NULL)
+	
+	if (!TempName.empty()  && NewFanPage != NULL)
 		cout << "fanpage was added successfully :)" << endl;
-
+	
 	ArryOfEntities.push_back(NewFanPage);
-	(this->LogicalNumberOfEntities)++;
-	(this->LogicalNumberOfFanPage)++;
+//	(this->LogicalNumberOfEntities)++;
+	(this->LogicalNumberOfFanPage)++; //remove
+	
 	
 
-
 }
+
 Facebook::~Facebook()
 {
 
 
 	//	entity ** ArryOfMember = new entity*[10];
 
-	for (int i = 0; i < LogicalNumberOfEntities; i++)
+	for (int i = 0; i < ArryOfEntities.size(); i++)
 	{
 		delete[]ArryOfEntities[i];
 	}

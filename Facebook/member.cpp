@@ -4,21 +4,19 @@
 
 
 
-
-
 void member::showLastTenFriendsStatuses()
 {
-	char *name;
+	string name;
 	int flag = 0;
 
-	if (logicSizeOfFriends == 0)
+	if (friends.size() == 0)
 	{
 		cout << "This user has no friends yet";
 		return;
 	}
-	for (int d = 0; d <this->logicSizeOfFriends; d++)
+	for (int d = 0; d <this->friends.size(); d++)
 	{
-		if (this->friends[d]->logicSizeOfStatus != 0)
+		if (this->friends[d]->MemberStatus.size() != 0)
 			flag = 1;
 
 	}
@@ -29,17 +27,17 @@ void member::showLastTenFriendsStatuses()
 	}
 	Status *mostRecentStatus = nullptr, *currStatus;
 	member *theWriterOfMostRecentStatus = nullptr;
-	for (int i = 0; i < logicSizeOfFriends; i++)
+	for (int i = 0; i < friends.size(); i++)
 	{
-		if (friends[i]->logicSizeOfStatus != 0)
-			friends[i]->whereToCheck = friends[i]->logicSizeOfStatus;
+		if (friends[i]->MemberStatus.size() != 0)
+			friends[i]->whereToCheck = friends[i]->MemberStatus.size();
 		else
 			friends[i]->whereToCheck = NOTHINGTOCHECK;
 	}
 	for (int i = 0; i < 10; i++)
 	{
 
-		for (int j = 0; j < logicSizeOfFriends; j++)
+		for (int j = 0; j < friends.size(); j++)
 		{
 			if (friends[j]->whereToCheck != NOTHINGTOCHECK)
 			{
@@ -97,38 +95,28 @@ void member::setBirthDay(int day, int month, int year)
 }
 member::member(const member& other)
 {
-	int i, size = strlen(other.name);
-	name = new char[size + 1];
-
-	for (i = 0; i < size; i++)
-	{
-		name[i] = other.name[i];
-
-	}
-	name[i] = '\0';
-	//strcpy(name, other.name);	
+	
 	this->birthday = other.birthday;
 }
 
 
 
+ 
 void member::operator+=(member * newfriend)
 {
 	int flag = 1, logicalsize;
-	for (int i = 0; i < this->logicSizeOfFriends; i++)
+
+	for (vector<member*>::iterator t=friends.begin() ; t!=friends.end(); t++)
 	{
-		if (this->friends[i] == newfriend)
+		if (*t == newfriend)
 		{
 			cout << this->getName() << " and " << newfriend->getName() << " are already friends ";
 			return;
 		}
 	}
-	logicalsize = newfriend->logicSizeOfFriends;
+
 	newfriend->friends.push_back(this);
 	friends.push_back(newfriend);
-	logicSizeOfFriends++;
-	newfriend->logicSizeOfFriends = newfriend->logicSizeOfFriends + 1;
-	
 	cout << this->getName() << " and " << newfriend->getName() << " are now friends " << endl;
 	return;
 }
@@ -140,9 +128,9 @@ void member::operator+=(fanPage *page)
 	int flag = 1, logicalsizeofpage;
 
 
-	for (int i = 0; i < this->logicSizeOfPage; i++)
+	for (vector<fanPage*>::iterator t = pageArr.begin(); t != pageArr.end(); t++)
 	{
-		if (this->pageArr[i] == page)
+		if (*t == page)
 		{
 			cout << this->getName() << "already likes this page" << endl;
 			return;
@@ -150,15 +138,7 @@ void member::operator+=(fanPage *page)
 	}
 
 	this->pageArr.push_back( page);
-	logicalsizeofpage = this->pageArr[logicSizeOfPage]->logicSizeOfFriends;
 	page->friends.push_back(this);
-	logicSizeOfPage++;
-
-	
-
-	page->logicSizeOfFriends++;
-	
-
 	cout << this->getName() << " now like the page " << page->getName();
 
 }
@@ -166,20 +146,24 @@ void member::operator+=(fanPage *page)
 
 
 
+
 void member::showPages()
 {
-	if (logicSizeOfPage == 0)
+	int i = 0;
+	if (this->pageArr.size() == 0)
 	{
 		cout << this->getName() << " doesn't like any page" << endl;
 	}
 	else
 	{
+		vector<fanPage*>::iterator iter;
 		cout << this->getName() << " is following the page:" << endl;
-		for (int i = 0; i < logicSizeOfFriends; i++)
+		for (iter = pageArr.begin(); iter!= pageArr.end(); iter++)
 		{
-			cout << i << ". ";
-			pageArr[i]->getName();
+			cout << i++ << ". ";
+			(*iter)->getName();
 			cout << endl;
+			iter++;
 		}
 	}
 }

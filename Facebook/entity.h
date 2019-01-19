@@ -11,6 +11,7 @@
 #include "TextStatus.h"
 #include "PictureStatus.h"
 #include <string.h>
+#include <string>
 #include "TextAndPicture.h"
 #include "VideoStatus.h"
 #include "TextVideo.h"
@@ -21,10 +22,7 @@ class entity
 {
 
 protected:
-	char *name;
-	int logicSizeOfFriends = 0;
-	int logicSizeOfStatus = 0;
-
+	string name;
 	vector < member*>  friends;
 	vector < Status*> MemberStatus;
 
@@ -36,22 +34,19 @@ public:
 	entity() = default;
 
 	void operator>(entity *other);
-	entity(char name[MAXNAME], member ** friends);
-	entity(const entity& other);
+	entity(string name, member ** friends);
+	//entity(const entity& other);
 
 
-	virtual char * getName() const
+	virtual const string&  getName() const
 	{
 		return name;
 
 	}
-	int  getlogicSizeOfStatus() const
-	{
-		return logicSizeOfStatus;
 
-	}
 
-	void setName(char *name);
+
+	void setName(string name);
 	void WritePost();
 
 

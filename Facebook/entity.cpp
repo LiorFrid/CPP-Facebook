@@ -8,30 +8,17 @@
 
 
 
-entity::entity(char name[MAXNAME], member ** friends)
+entity::entity(string name, member ** friends)
 {
 	this->name = name;
 
 }
 
-void entity::setName(char *name)
+void entity::setName(const string name)
 {
 	this->name = name;
 }
 
-entity::entity(const entity& other)
-{
-	int i, size = strlen(other.name);
-	name = new char[size + 1];
-
-	for (i = 0; i < size; i++)
-	{
-		name[i] = other.name[i];
-
-	}
-	name[i] = '\0';
-	//strcpy(name, other.name);	
-}
 
 
 void entity::WritePost()
@@ -57,9 +44,10 @@ void entity::WritePost()
 	if (x == 1)
 	{
 		check1 = dynamic_cast<TextStatus*>(newstatus);
-		for (i = 0; i < logicSizeOfStatus; i++)
+		vector<Status*>::iterator StatusIter;
+		for (StatusIter=MemberStatus.begin(); StatusIter!= MemberStatus.end(); StatusIter++)
 		{
-			check2=  dynamic_cast<TextStatus*>(this->MemberStatus[i]);
+			check2=  dynamic_cast<TextStatus*> (*StatusIter);
 			
 			if (check1&&check2)
 			{
@@ -78,8 +66,6 @@ void entity::WritePost()
 	{
 		this->MemberStatus.push_back (newstatus);
 
-		logicSizeOfStatus++;
-
 	}
 }
 
@@ -87,7 +73,8 @@ void entity::WritePost()
 
 void entity::showFriends()
 {
-	if (logicSizeOfFriends == 0)
+	int i = 0;
+	if (this->friends.size() == 0)
 	{
 
 		cout << this->getName() << " has no Facebook friends" << endl; ///fix this!!!!
@@ -95,10 +82,12 @@ void entity::showFriends()
 	else
 	{
 		cout << this->getName() << "'s Facebook's friends are:" << endl;
-		for (int i = 0; i < logicSizeOfFriends; i++)
+		vector<member*>::iterator FriendIter;
+		for (FriendIter=friends.begin(); FriendIter != friends.end(); FriendIter++)
 		{
-			cout << i << ".  " << friends[i]->getName() << endl;
+			cout << i << ".  " << (*FriendIter)->getName() << endl;
 			//cout << i << ". " <<this->friends->show << endl;
+			i++;
 		}
 	}
 }
@@ -107,17 +96,17 @@ void entity::showFriends()
 
 void  entity::operator>(entity *other)
 {
-	if (logicSizeOfFriends > other->logicSizeOfFriends)
-		cout << this->getName() << "'s number of followers (" << logicSizeOfFriends << ") is higher than " << other->getName() << "'s (" << other->logicSizeOfFriends << ")\n";
-	if (logicSizeOfFriends < other->logicSizeOfFriends)
-		cout << other->getName() << "'s number of followers (" << other->logicSizeOfFriends << ") is higher than " << this->getName() << "'s (" << logicSizeOfFriends << ")\n";
-	if (logicSizeOfFriends == other->logicSizeOfFriends)
-		cout << "both " << other->getName() << " and " << this->getName() << " as the same number of followers - " << logicSizeOfFriends << "\n";
+	if (friends.size() > other->friends.size())
+		cout << this->getName() << "'s number of followers (" << friends.size() << ") is higher than " << other->getName() << "'s (" << other->friends.size() << ")\n";
+	if (friends.size() < other->friends.size())
+		cout << other->getName() << "'s number of followers (" << other->friends.size() << ") is higher than " << this->getName() << "'s (" << friends.size() << ")\n";
+	if (friends.size() == other->friends.size())
+		cout << "both " << other->getName() << " and " << this->getName() << " as the same number of followers - " << friends.size() << "\n";
 }
 
 entity::~entity()
 {
-	delete[] name;
+	
 	//need to clear all friends
 	friends.clear();
 	//need to clear all status

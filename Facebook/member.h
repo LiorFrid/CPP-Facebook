@@ -18,8 +18,6 @@ class member : public entity {
 private:
 	Date birthday;
 	int whereToCheck;
-	int logicSizeOfPage = 0;
-	int physicSizeOfPage = 4;
 	vector<fanPage *> pageArr;
 
 public:
@@ -36,7 +34,7 @@ public:
 
 	void getBirthDay() { this->birthday.ShowDate(); }
 	int getwheretocheck() { return whereToCheck; }
-	char * getName() const { return name; }
+	//const string getName() const { return name; } //WTF is that
 	void setwheretocheck(int newchec) { whereToCheck = newchec; }
 	void setBirthDay(int day, int month, int year);
 	void showPages();

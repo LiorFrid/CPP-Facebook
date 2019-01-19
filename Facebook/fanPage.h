@@ -13,13 +13,9 @@ private:
 
 public:
 	fanPage();
-	fanPage(char * name);
-	fanPage(const fanPage& other);
-	char * getName() const
-	{
-		return name;
+	//fanPage(char * name);
+	//fanPage(const fanPage& other);
 
-	}
 	~fanPage();
 
 

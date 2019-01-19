@@ -25,14 +25,13 @@ public:
 	//GetFanPage;
 	void ShowMembers();
 	void ShowFanPage();
-	int CheckNoDupName(char * name, int flag);
+	int CheckNoDupName(string name, int flag);
 	~Facebook();
 
 private:
 
 	int LogicalNumberOfMembers = 0;
 	int LogicalNumberOfFanPage = 0;
-	int LogicalNumberOfEntities = 0;
 
 	vector<entity*> ArryOfEntities;
 
