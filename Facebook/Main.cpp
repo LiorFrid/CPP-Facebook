@@ -205,6 +205,7 @@ void banner()
 void main()
 	{
 	banner();
+	banner();
 	cout << "WELCOME TO THE NEW GENERATION OF FACEBOOK!!!" << endl << endl;
 	Facebook myface;
 	int choice;
